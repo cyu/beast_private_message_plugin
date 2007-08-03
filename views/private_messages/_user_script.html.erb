@@ -1,0 +1,18 @@
+var PrivateMessageForm = {
+  show: function(userId, subject) {
+    if(subject && !(subject.match(/^re:/i))) {
+      subject = "RE: " + subject;
+    }
+
+    $('private-message').show();
+	
+	Field.clear('private_message_body');
+	
+	$('private_message_recipient_id').value = userId;
+	
+	var title = $('private_message_title');
+	title.value = subject || '<Enter Subject>';
+	Field.select(title);
+	Field.focus(title);
+  }
+}
