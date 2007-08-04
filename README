@@ -1,4 +1,4 @@
-A plugin that adds private messaging support for Beast.
+A plugin that adds private messaging support to Beast.
 
 INSTALL INSTRUCTIONS
 ==============================
@@ -7,3 +7,14 @@ INSTALL INSTRUCTIONS
 2) Run the following command
 
       script/runner 'Beast::Plugins::PrivateMessage.install'
+
+3) Edit app/views/users/show.html.erb and add the following lines at the bottom:
+
+     <%= private_messages @user %>
+     <%= private_message_for @user %>
+
+   The first method, 'private_messages', lists the private messages between the
+   session user and the passed in user.  If the passed in user is the same as
+   the session user, then all private messages involving that user is listed.
+   The second method, 'private_message_for', generates the private message form
+   on that page and a link to show that form.
