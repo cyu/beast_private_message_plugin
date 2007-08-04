@@ -4,11 +4,18 @@ INSTALL INSTRUCTIONS
 ==============================
 
 1) Install this plugin.
+
 2) Run the following command
 
-      script/runner 'Beast::Plugins::PrivateMessage.install'
+     script/runner 'Beast::Plugins::PrivateMessage.install'
 
-3) Edit app/views/users/show.html.erb and add the following lines at the bottom:
+3) Add the plugin to the list of Beast plugins to be initialized.  If you this is
+   the first Beast plugin you can initialize plugins by creating a plugins.rb file
+   in config/initializers and add the following line(s):
+   
+     Beast::Plugin.initialize_plugins 'Beast::Plugins::PrivateMessage'
+
+4) Edit app/views/users/show.html.erb and add the following lines at the bottom:
 
      <%= private_messages @user %>
      <%= private_message_for @user %>
