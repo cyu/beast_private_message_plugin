@@ -27,7 +27,7 @@ end
 
 Class.class_eval do
   def inherited_with_extensions(klass)
-    User.send(:include, UserExtension) if klass == User
+    klass.send(:include, UserExtension) if klass.name.to_s == 'User'
     inherited_without_extensions(klass)
   end
   alias_method_chain :inherited, :extensions
