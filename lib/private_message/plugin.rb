@@ -14,9 +14,35 @@ module Beast
   
       def initialize
         super
+        ::User.send :include, UserExtension
         ActionView::Base.send :include, PrivateMessagesHelper
         ApplicationController.class_eval do
           prepend_view_path File.join(PrivateMessage::plugin_path, 'views')
+        end
+      end
+      
+      module UserExtension
+        def self.included(base)
+          base.has_many :private_messages_sent, :foreign_key => 'sender_id',
+              :class_name => 'PrivateMessage', :order => ::PrivateMessage.default_order
+          base.has_many :private_messages_received, :foreign_key => 'recipient_id',
+              :class_name => 'PrivateMessage', :order => ::PrivateMessage.default_order
+        end
+      
+        def private_messages(options = {})
+          ::PrivateMessage.find_associated_with(self, options)
+        end
+        
+        def private_messages_count
+          ::PrivateMessage.count_associated_with(self)
+        end
+        
+        def private_messages_with_user(user, options = {})
+          ::PrivateMessage.find_between(self, user, options)
+        end
+      
+        def private_messages_with_user_count(user)
+          ::PrivateMessage.count_between(self, user)
         end
       end
       
