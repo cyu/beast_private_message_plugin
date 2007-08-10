@@ -3,9 +3,12 @@ A plugin that adds private messaging support to Beast.
 INSTALL INSTRUCTIONS
 ==============================
 
-1) Install this plugin.
+1) Install this plugin:
 
-2) Run the following command
+     cd vendor/beast
+     svn export http://svn.codeeg.com/beast/private_message
+
+2) Run the following command:
 
      script/runner 'Beast::Plugins::PrivateMessage.install'
 

@@ -9,15 +9,17 @@ module Beast
       
       route :pm, 'pm/:action/:id', :controller => 'private_messages'
       
-      Dependencies.load_paths << File.expand_path(File.join(RAILS_ROOT, 'vendor', 'plugins',
-          PrivateMessage::plugin_name, 'app'))
+      [ 'controllers', 'helpers', 'models' ].each do |dir|
+        path = File.join(plugin_path, 'app', dir)
+        Dependencies.load_paths << File.expand_path(path) if File.exist?(path)
+      end
   
       def initialize
         super
         ::User.send :include, UserExtension
         ActionView::Base.send :include, PrivateMessagesHelper
         ApplicationController.class_eval do
-          prepend_view_path File.join(PrivateMessage::plugin_path, 'views')
+          prepend_view_path File.join(PrivateMessage::plugin_path, 'app', 'views')
         end
       end
       
