@@ -6,6 +6,15 @@ class PrivateMessagesController < ApplicationController
     @private_message = current_user.private_messages_sent.build(params[:private_message])
     @private_message.recipient_id = params[:private_message][:recipient_id]
     @private_message.save!
+    
+    begin
+      PrivateMessageMailer.deliver_notification(current_user, @private_message.recipient,
+          request.host_with_port, profile_url(@private_message.recipient))
+    rescue Net::SMTPServerBusy, Net::SMTPUnknownError, \
+      Net::SMTPSyntaxError, Net::SMTPFatalError, TimeoutError => e
+      logger.error("error sending email to #{@private_message.recipient.email}: #{e}")
+    end
+    
     respond_to do |format|
       format.html { redirect_to user_path(@private_message.recipient_id) }
     end

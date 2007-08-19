@@ -1,0 +1,6 @@
+Hi <%= @recipient.display_name %>!
+
+<%= 'You have received a private message from {sender}.'[:email_pm_received, @sender.display_name] %>
+
+<%= 'You can view your private messages by visiting the link below:'[:email_view_pm] %>
+<%= @messages_url %>
