@@ -9,7 +9,7 @@ class PrivateMessagesController < ApplicationController
     
     begin
       PrivateMessageMailer.deliver_notification(current_user, @private_message.recipient,
-          request.host_with_port, profile_url(@private_message.recipient))
+          request.host_with_port, user_url(@private_message.recipient))
     rescue Net::SMTPServerBusy, Net::SMTPUnknownError, \
       Net::SMTPSyntaxError, Net::SMTPFatalError, TimeoutError => e
       logger.error("error sending email to #{@private_message.recipient.email}: #{e}")
