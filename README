@@ -7,22 +7,26 @@ A plugin that adds private messaging support to Beast.
 INSTALL INSTRUCTIONS
 ==============================
 
-1) Install this plugin:
+1) First, install the beast_plugins plugin if you haven't already:
+
+     script/plugin install http://svn.techno-weenie.net/projects/beast/plugins/beast_plugins
+
+2) Install this plugin:
 
      cd vendor/beast
      svn export http://svn.codeeg.com/beast/private_message
 
-2) Run the following command:
+3) Run the following command:
 
      script/runner 'Beast::Plugins::PrivateMessage.install'
 
-3) Add the plugin to the list of Beast plugins to be initialized.  If you this is
+4) Add the plugin to the list of Beast plugins to be initialized.  If you this is
    the first Beast plugin you can initialize plugins by creating a plugins.rb file
    in config/initializers and add the following line(s):
    
      Beast::Plugin.initialize_plugins 'Beast::Plugins::PrivateMessage'
 
-4) Edit app/views/users/show.html.erb and add the following lines at the bottom:
+5) Edit app/views/users/show.html.erb and add the following lines at the bottom:
 
      <%= private_messages @user %>
      <%= private_message_for @user %>
