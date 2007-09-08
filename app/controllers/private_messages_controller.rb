@@ -1,5 +1,5 @@
 class PrivateMessagesController < ApplicationController
-  before_filter :find_message, :only => [:edit, :update]
+  before_filter :find_message, :only => [:edit, :update, :destroy]
   before_filter :login_required
   
   def create
@@ -28,13 +28,25 @@ class PrivateMessagesController < ApplicationController
       format.html { redirect_to pm_path }
     end
   end
-  
+
+  def destroy
+    recipient_id = @private_message.recipient_id
+    @private_message.destroy
+    flash[:notice] = "Private message '{title}' was deleted."[:private_message_deleted_message, @private_message.title]
+    respond_to do |format|
+      format.html do
+        redirect_to user_path(recipient_id)
+      end
+      format.xml { head 200 }
+    end
+  end
+
   protected
     def find_message
       @private_message = PrivateMessage.find params[:id]
     end
   
     def authorized?
-      (not ['edit', 'update'].include?(action_name)) || @private_message.editable_by?(current_user)
+      (not ['edit', 'destroy', 'update'].include?(action_name)) || @private_message.editable_by?(current_user)
     end
 end

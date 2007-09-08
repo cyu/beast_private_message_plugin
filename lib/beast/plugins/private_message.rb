@@ -3,11 +3,11 @@ module Beast
 
     class PrivateMessage < Beast::Plugin
       author 'Calvin Yu - codeeg.com'
-      version '0001'
-      homepage "http://blog.codeeg.com"
+      version '0002'
+      homepage "http://boardista.com"
       notes "Private message support for Beast"
-      
-      route :pm, 'pm/:action/:id', :controller => 'private_messages'
+
+      route :resources, 'private_messages'
       
       %w( controllers helpers models ).each do |dir|
         path = File.join(plugin_path, 'app', dir)

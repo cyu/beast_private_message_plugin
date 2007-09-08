@@ -2,7 +2,7 @@
 
 <h1><%= title %><a name="<%= dom_id private_messages.first %>" id="<%= dom_id private_messages.first %>">&nbsp;</a></h1>
 
-<table border="0" cellspacing="0" cellpadding="0" class="posts wide">
+<table border="0" cellspacing="0" cellpadding="0" class="private_messages posts wide">
 <% for message in private_messages do %>
 <% unless message == private_messages.first %>
 <tr class="spacer">
@@ -21,16 +21,23 @@
       </a>
     </div>
 
-    <%= avatar_for message.sender %>
+    <%= avatar_for(message.sender) unless message.sender == current_user %>
     From: <span class="fn"><%= link_to truncate(h(message.sender.display_name), 15), user_path(message.sender), :class => (message.sender == target_user ? "threadauthor" : nil) %></span>
     <% if message.sender.admin? %>
     <span class="admin">
-      <% if message.sender.admin? %>
       <%= 'Administator'[:administrator_title] %>
-      <% end %>
     </span>
     <% end %>
 
+    <div class="recipient">
+      <%= avatar_for(message.recipient) unless message.recipient == current_user %>
+      To: <%= link_to truncate(h(message.recipient.display_name), 15), user_path(message.recipient), :class => (message.recipient == target_user ? "threadauthor" : nil) %>
+      <% if message.recipient.admin? %>
+        <span class="admin">
+          <%= 'Administator'[:administrator_title] %>
+        </span>
+      <% end %>
+    </div>
 
   </td>
   <td class="body entry-content" id="post-body-<%= message.id %>">
@@ -42,20 +49,10 @@
 	
 	<% if current_user.id == message.recipient.id -%>
 	<p><%= link_to_function 'Reply'[], "PrivateMessageForm.show(#{message.sender.id}, '#{escape_javascript(message.title)}')", :class => "utility" %></p>
+    <% else -%>
+    <p><%= link_to 'Delete'[], private_message_path(message), :class => "utility", :method => :delete,
+               :confirm => 'Delete this message forever?'[:delete_private_message_conf] %></p>
 	<% end -%>
-  </td>
-  <td class="author vcard">
-    <%= avatar_for message.recipient %>
-    To: <span class="fn"><%= link_to truncate(h(message.recipient.display_name), 15), user_path(message.recipient), :class => (message.recipient == target_user ? "threadauthor" : nil) %></span>
-    <% if message.recipient.admin? %>
-    <span class="admin">
-      <% if message.recipient.admin? %>
-      <%= 'Administator'[:administrator_title] %>
-      <% end %>
-    </span>
-    <% end %>
-
-
   </td>
 </tr>
 
