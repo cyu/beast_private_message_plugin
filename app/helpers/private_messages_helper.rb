@@ -12,12 +12,14 @@ module PrivateMessagesHelper
     render(:partial => 'private_messages/new_form') if logged_in?
   end
   
+  # renders a link to send a private message to a user
   def private_message_for(user, msg=default_private_message_link_text)
     return unless logged_in?
     private_message_link(user) + private_message_form
   end
   
-  def private_messages(context_user = nil, read_messages = false, opts={})
+  # renders a list of private messages
+  def private_messages(context_user = nil, opts={})
     return unless logged_in?
     
     count = if current_user.id == context_user.id
@@ -39,8 +41,14 @@ module PrivateMessagesHelper
         end
       end
       
+      title = if opts[:title]
+      elsif current_user.id != context_user.id
+        'You Private Messages with {user}'[:private_messages_with_user, context_user.display_name]
+      else
+        'Private Messages'[:private_messages]
+      end
       render :partial => 'private_messages/list', :locals => {:private_messages => private_messages,
-          :title => (opts[:title]||'Private Messages'[]), :target_user => context_user}
+          :title => title, :target_user => context_user}
     end
   end
   
