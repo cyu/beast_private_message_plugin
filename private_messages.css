@@ -1,0 +1,12 @@
+/* Styles for private messages list */
+.post .recipient {
+    clear: both;
+    text-align: right;
+    padding-top: 1em;
+}
+.post .recipient img {
+    float: right;
+    margin-right: 0;
+    margin-left: 0.5em;
+}
+/* End of styles for private messages list */

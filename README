@@ -36,3 +36,8 @@ INSTALL INSTRUCTIONS
    the session user, then all private messages involving that user is listed.
    The second method, 'private_message_for', generates the private message form
    on that page and a link to show that form.
+
+6) Add some additional styles to public/stylesheets/display.css by copying the contents of
+   private_messages.css to that stylesheet:
+   
+     cat vendor/beast/private_message/private_messages.css >> public/stylesheets/display.css
