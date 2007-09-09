@@ -3,15 +3,17 @@ module Beast
 
     class PrivateMessage < Beast::Plugin
       author 'Calvin Yu - codeeg.com'
-      version '0002'
+      version '0003'
       homepage "http://boardista.com"
       notes "Private message support for Beast"
 
       route :resources, 'private_messages'
       
       %w( controllers helpers models ).each do |dir|
-        path = File.join(plugin_path, 'app', dir)
-        Dependencies.load_paths << File.expand_path(path) if File.exist?(path)
+        path = File.expand_path(File.join(plugin_path, 'app', dir))
+        if File.exist?(path) && !Dependencies.load_paths.include?(path)
+          Dependencies.load_paths << path
+        end
       end
       
       def initialize
