@@ -9,10 +9,6 @@ class PrivateMessage < ActiveRecord::Base
   validates_presence_of :sender_id, :recipient_id, :body, :title
   attr_accessible :title, :body
   
-  def read
-    self.mark_read = true
-  end
-
   def editable_by?(user)
     user && (user.id == sender_id)
   end
