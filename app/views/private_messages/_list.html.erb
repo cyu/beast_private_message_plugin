@@ -47,12 +47,14 @@
 -->
     <%= message.body_html %>
 	
-	<% if current_user.id == message.recipient.id -%>
-	<p><%= link_to_function 'Reply'[], "PrivateMessageForm.show(#{message.sender.id}, '#{escape_javascript(message.title)}')", :class => "utility" %></p>
-    <% else -%>
-    <p><%= link_to 'Delete'[], private_message_path(message), :class => "utility", :method => :delete,
-               :confirm => 'Delete this message forever?'[:delete_private_message_conf] %></p>
-	<% end -%>
+    <p>
+	  <% if current_user.id == message.recipient.id -%>
+	  <%= link_to_function 'Reply'[], "PrivateMessageForm.show(#{message.sender.id}, '#{escape_javascript(message.title)}')", :class => "utility" %> &mdash;
+      <% end -%>
+      
+      <%= link_to 'Delete'[], private_message_path(message), :class => "utility", :method => :delete,
+               :confirm => 'Delete this message forever?'[:delete_private_message_conf] %>
+    </p>
   </td>
 </tr>
 

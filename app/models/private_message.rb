@@ -17,6 +17,24 @@ class PrivateMessage < ActiveRecord::Base
     user && (user.id == sender_id)
   end
 
+  def delete_by!(user)
+    self.sender_deleted = true if sender?(user)
+    self.recipient_deleted = true if recipient?(user)
+    if sender_deleted? && recipient_deleted?
+      destroy
+    else
+      save!
+    end
+  end
+  
+  def sender?(user)
+    sender_id == user.id
+  end
+  
+  def recipient?(user)
+    recipient_id == user.id
+  end
+
   def self.find_associated_with(user, opts = {})
     find_options = associated_with_condition(user).merge!(:order => default_order)
     find_options.merge!(opts)
@@ -44,12 +62,12 @@ class PrivateMessage < ActiveRecord::Base
   protected
   
     def self.between_condition(user, other_user)
-      {:conditions => [ '(sender_id = ? AND recipient_id = ?) OR (sender_id = ? AND recipient_id = ?)',
+      {:conditions => [ '(sender_id = ? AND recipient_id = ? AND sender_deleted = 0) OR (sender_id = ? AND recipient_id = ? AND recipient_deleted = 0)',
           user.id, other_user.id, other_user.id, user.id ]}
     end
 
     def self.associated_with_condition(user)
-      {:conditions => [ 'sender_id = ? OR recipient_id = ?', user.id, user.id ]}
+      {:conditions => [ '(sender_id = ? AND sender_deleted = 0) OR (recipient_id = ? AND recipient_deleted = 0)', user.id, user.id ]}
     end
   
 end

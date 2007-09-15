@@ -59,8 +59,9 @@ module Beast
             t.column :title, :string
             t.column :body, :text
             t.column :body_html, :text
-            t.column :mark_read, :boolean, :default => false
-            t.timestamps 
+            t.column :sender_deleted, :boolean, :default => false
+            t.column :recipient_deleted, :boolean, :default => false
+            t.timestamps
           end
           
           add_index :private_messages, :sender_id

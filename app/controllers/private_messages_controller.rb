@@ -31,7 +31,7 @@ class PrivateMessagesController < ApplicationController
 
   def destroy
     recipient_id = @private_message.recipient_id
-    @private_message.destroy
+    @private_message.delete_by! current_user
     flash[:notice] = "Private message '{title}' was deleted."[:private_message_deleted_message, @private_message.title]
     respond_to do |format|
       format.html do
@@ -47,6 +47,8 @@ class PrivateMessagesController < ApplicationController
     end
   
     def authorized?
-      (not ['edit', 'destroy', 'update'].include?(action_name)) || @private_message.editable_by?(current_user)
+      (not ['edit', 'destroy', 'update'].include?(action_name)) ||
+          @private_message.editable_by?(current_user) ||
+          (action_name == 'destroy' && @private_message.recipient?(current_user))
     end
 end
