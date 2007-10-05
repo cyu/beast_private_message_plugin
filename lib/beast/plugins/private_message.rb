@@ -3,7 +3,7 @@ module Beast
 
     class PrivateMessage < Beast::Plugin
       author 'Calvin Yu - codeeg.com'
-      version '0003'
+      version '0004'
       homepage "http://boardista.com"
       notes "Private message support for Beast"
 

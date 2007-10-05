@@ -58,12 +58,13 @@ class PrivateMessage < ActiveRecord::Base
   protected
   
     def self.between_condition(user, other_user)
-      {:conditions => [ '(sender_id = ? AND recipient_id = ? AND sender_deleted = 0) OR (sender_id = ? AND recipient_id = ? AND recipient_deleted = 0)',
-          user.id, other_user.id, other_user.id, user.id ]}
+      {:conditions => [ '(sender_id = ? AND recipient_id = ? AND sender_deleted = ?) OR (sender_id = ? AND recipient_id = ? AND recipient_deleted = ?)',
+          user.id, other_user.id, false, other_user.id, user.id, false ]}
     end
 
     def self.associated_with_condition(user)
-      {:conditions => [ '(sender_id = ? AND sender_deleted = 0) OR (recipient_id = ? AND recipient_deleted = 0)', user.id, user.id ]}
+      {:conditions => [ '(sender_id = ? AND sender_deleted = ?) OR (recipient_id = ? AND recipient_deleted = ?)',
+          user.id, false, user.id, false]}
     end
   
 end
