@@ -3,7 +3,7 @@ module Beast
 
     class PrivateMessage < Beast::Plugin
       author 'Calvin Yu - codeeg.com'
-      version '0004'
+      version '0005'
       homepage "http://boardista.com"
       notes "Private message support for Beast"
 
@@ -61,7 +61,8 @@ module Beast
             t.column :body_html, :text
             t.column :sender_deleted, :boolean, :default => false
             t.column :recipient_deleted, :boolean, :default => false
-            t.timestamps
+            t.column :created_at, :datetime
+            t.column :updated_at, :datetime
           end
           
           add_index :private_messages, :sender_id
